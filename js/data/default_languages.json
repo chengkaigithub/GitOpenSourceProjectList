@@ -1,0 +1,26 @@
+[
+  {
+    "name": "IOS",
+    "isChecked": true
+  },
+  {
+    "name": "Android",
+    "isChecked": true
+  },
+  {
+    "name": "Java",
+    "isChecked": false
+  },
+  {
+    "name": "PHP",
+    "isChecked": false
+  },
+  {
+    "name": "ReactNative",
+    "isChecked": false
+  },
+  {
+    "name": "React",
+    "isChecked": false
+  }
+]

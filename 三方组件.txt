@@ -1,0 +1,33 @@
+npm install react-native-tab-navigator —save Bottom导航栏
+http://blog.csdn.net/jing85432373/article/details/54342756
+
+npm install react-native-scrollable-tab-view --save  类似android中的TabLayout组件
+
+复选框react-native-check-box
+npm i react-native-check-box --save（mac）
+import CheckBox from 'react-native-check-box'
+
+toast
+Run npm i react-native-easy-toast --save
+import Toast, {DURATION} from 'react-native-easy-toast'
+https://github.com/crazycodeboy/react-native-easy-toast
+
+可排序的listview
+npm install react-native-sortable-listview --save
+https://github.com/deanmcpherson/react-native-sortable-listview
+
+启动欢迎页
+crazycodeboy/react-native-splash-screen
+https://github.com/crazycodeboy/react-native-splash-screen
+
+
+自定义RefreshControll
+http://www.jianshu.com/p/9a4151852722
+
+navigator 页面跳转
+http://blog.csdn.net/huaheshangxo/article/details/50926946
+
+
+
+
+
