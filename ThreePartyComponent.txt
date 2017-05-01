@@ -27,7 +27,112 @@ http://www.jianshu.com/p/9a4151852722
 navigator 页面跳转
 http://blog.csdn.net/huaheshangxo/article/details/50926946
 
+官方打包教程
+http://reactnative.cn/docs/0.43/signed-apk-android.html#content
 
+android-studio中打包命令
+./gradlew assembleRelease
+----------------热更新新流程-------------------------
 
+React Native应用部署/热更新-CodePush集成
+http://www.devio.org/2016/07/23/React-Native应用部署-热更新-CodePush最新集成总结/
+
+JS -> C++ -> Java
+
+1.安装CodePush
+npm install -g code-push-cli
+code-push -v  查看版本
+
+2.创建一个CodePush 账号
+code-push register
+可以获取到 access key: VyQNqVNeBGCYREnzP49eSvm9ORhL4kBBwhRAG
+session文件写在 /Users/chengkai/.code-push.config
+code-push login
+
+{
+    // 常用命令
+    code-push login 登陆
+    code-push logout 注销
+    code-push access-key ls 列出登陆的token
+    code-push access-key rm <accessKye> 删除某个 access-key
+}
+
+3.在CodePush服务器注册app
+生成的key：
+code-push app add GitOpenSourceProjectList
+{
+    code-push app add GitOpenSourceProjectList
+    ┌────────────┬───────────────────────────────────────┐
+    │ Name       │ Deployment Key                        │
+    ├────────────┼───────────────────────────────────────┤
+    │ Production │ 5Ry9CB5AjN3-RJyzyRfjGOda-Qm04kBBwhRAG │
+    ├────────────┼───────────────────────────────────────┤
+    │ Staging    │ 66Q38aEzbMehpO4VKqia2aZdLK7w4kBBwhRAG │
+    └────────────┴───────────────────────────────────────┘
+    code-push app add GitOpenSourceProjectList-Android
+    ┌────────────┬───────────────────────────────────────┐
+    │ Name       │ Deployment Key                        │
+    ├────────────┼───────────────────────────────────────┤
+    │ Production │ 0iCxqXRaK2M7T4msYgWzD4CzXjH34kBBwhRAG │
+    ├────────────┼───────────────────────────────────────┤
+    │ Staging    │ dkb0nZ11pGzGNXmy6RkQEjNzNgWe4kBBwhRAG │
+    └────────────┴───────────────────────────────────────┘
+    code-push app add GitOpenSourceProjectList-Android-ios
+    ┌────────────┬───────────────────────────────────────┐
+    │ Name       │ Deployment Key                        │
+    ├────────────┼───────────────────────────────────────┤
+    │ Production │ bmZ5G8_JaaZW6QBiIvHI_2QpsckD4kBBwhRAG │
+    ├────────────┼───────────────────────────────────────┤
+    │ Staging    │ Ft9ZLOjJHay3cTc2ZDLtW-8sN_XI4kBBwhRAG │
+    └────────────┴───────────────────────────────────────┘
+}
+客户端集成CodePush插件
+1.安装插件
+npm install --save react-native-code-push
+2.link插件中的Android/ios项目
+react-native link react-native-code-push
+{
+    // 上面link命令会自动在android/app/build.gradle文件里面添如下代码：
+    apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+    // 也会自动在/android/settings.gradle中添加如下代码：
+    include ':react-native-code-push'
+    project(':react-native-code-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-code-push/android/app')
+    // 并且自动在android工程中生成三方依赖库
+    重新打开android项目  react-native-code-push
+}
+
+在JS代码中设置更新的策略
+1.在js中加载 CodePush模块： 
+import codePush from 'react-native-code-push' 
+
+2.在componentDidMount中调用 sync方法，后台请求更新
+codePush.sync({
+                updateDialog: {
+                    appendReleaseDescription: true,
+                    descriptionPrefix:'\n\n更新内容：\n',
+                    title:'更新',
+                    mandatoryUpdateMessage:'',
+                    mandatoryContinueButtonLabel:'更新',
+                },
+                mandatoryInstallMode:codePush.InstallMode.IMMEDIATE,
+                deploymentKey: '更换成android项目的DeploymentKey,上述步骤中生成',
+            });
+
+发布更新[***修改android/app/build.gradle, versionName "1.0.0"（注意是三位数)***]
+1.修改有bug的文件或者改动代码
+2.生成bundle文件
+在项目根目录创建一个bundle目录，还要复制图片资源
+react-native bundle --platform android --entry-file index.android.js --bundle-output ./bundle/index.android.bundle --assets-dest ./bundle/  --dev false
+
+3.发布更新
+// 只发布bundle文件,会导致图片加载不出来
+code-push release GitOpenSourceProjectList ./bundle/index.android.bundle 1.0.0 --deploymentName Production --description "1.我的页面背景改变" --mandatory true
+
+// 防止图片加载不出来, 发布bundle文件和图片
+code-push release GitOpenSourceProjectList ./bundle 1.0.0 --deploymentName Production --description "1.我的页面背景改变" --mandatory true
+
+code-push deployment ls GitOpenSourceProjectList 查看部署情况
+
+------------------------------------------
 
 

@@ -1,3 +1,4 @@
 <resources>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">5Ry9CB5AjN3-RJyzyRfjGOda-Qm04kBBwhRAG</string>
     <string name="app_name">GitOpenSourceProjectList</string>
 </resources>
